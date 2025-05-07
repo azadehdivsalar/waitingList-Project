@@ -1,13 +1,13 @@
 <template>
   <q-page class="q-pa-md flight-page" dir="rtl">
     <!-- فیلترها -->
-    <div class="q-mb-md row q-col-gutter-md filters-box">
+    <div class="q-mb-md row q-col-gutter-md ">
       <q-select
         outlined
         v-model="store.filters.origin"
         :options="cities"
         label="مبدا"
-        class="col-3 filters-box"
+        class="col-3 "
         dense
       />
       <q-select
@@ -15,7 +15,7 @@
         v-model="store.filters.destination"
         :options="cities"
         label="مقصد"
-        class="col-3 filters-box"
+        class="col-3 "
         dense
       />
 
@@ -29,7 +29,6 @@
       <div class="auto">
         <q-btn
           label="جستجو"
-          color="secondary"
           @click="store.fetchFlights"
           icon="search"
           class="q-mr-sm button"

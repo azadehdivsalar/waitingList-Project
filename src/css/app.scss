@@ -1,11 +1,14 @@
 .flight-page {
   direction: rtl;
   font-family: IRANSans, sans-serif;
-  background-color: #f0f2f5; 
+  background-color: #f0f2f5;
   min-height: 100vh;
   padding-bottom: 32px;
 }
-
+.searchbutton {
+  background-color: #01986f;
+  color: #ffffff;
+}
 /* استایل جعبه فیلتر */
 .filters-box {
   background: #ffffff;
