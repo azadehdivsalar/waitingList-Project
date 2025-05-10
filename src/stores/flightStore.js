@@ -9,6 +9,8 @@ export const useFlightStore = defineStore('flight', {
       flightNumber: '',
     },
     flights: [],
+    selectedFlight: null,
+    requestHistory: [],
   }),
   actions: {
     fetchFlights() {
@@ -23,28 +25,33 @@ export const useFlightStore = defineStore('flight', {
           price: '8450000',
           seats: 236,
           plane: 'مدل هواپیما',
+          reservedCount: 120,
+          requestCount: 15,
         },
         {
-          id: 1,
+          id: 2,
           origin: '(TEH)تهران',
-          destination: 'مشهد',
+          destination: '(MHD)مشهد',
           flightNumber: 'W5022',
           date: '1403/02/15',
           price: '5500000',
           seats: 236,
           plane: 'مدل هواپیما',
+          reservedCount: 180,
+          requestCount: 25,
         },
         {
-          id: 1,
-          origin: 'تهران',
-          destination: 'اصفهان',
+          id: 3,
+          origin: '(TEH)تهران',
+          destination: '(IFN)اصفهان',
           flightNumber: 'w52230',
           date: '1403/02/15',
           price: '78454500',
           seats: 236,
           plane: 'مدل هواپیما',
+          reservedCount: 150,
+          requestCount: 20,
         },
-        // پروازهای دیگر ...
       ]
     },
     clearFilters() {
@@ -60,5 +67,23 @@ export const useFlightStore = defineStore('flight', {
     clearSelectedFlight() {
       this.selectedFlight = null
     },
+    addToRequestHistory(request) {
+      this.requestHistory.push({
+        ...request,
+        id: Date.now(),
+        status: 'در انتظار بررسی',
+        requestTime: new Date().toLocaleString('fa-IR'),
+      })
+    },
+    updateRequestStatus(requestId, status) {
+      const request = this.requestHistory.find((r) => r.id === requestId)
+      if (request) {
+        request.status = status
+      }
+    },
+  },
+  getters: {
+    getRequestHistory: (state) => state.requestHistory,
+    getSelectedFlight: (state) => state.selectedFlight,
   },
 })

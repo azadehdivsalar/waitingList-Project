@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row" dir="rtl">
-      <q-tabs v-model="tab">
+      <q-tabs v-model="tab" active-color="positive">
         <q-tab name="requestSubmit" label="ثبت درخواست" />
         <q-tab name="requestHistory" label="تاریخچه درخواست" />
       </q-tabs>

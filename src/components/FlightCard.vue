@@ -1,69 +1,59 @@
 <template>
   <q-card class="flight-card q-pa-none" dir="rtl" style="overflow: visible">
-    <div
-      class="row q-col-gutter-md q-pa-md items-start q-gutter-sm"
-      :class="$q.screen.lt.sm ? 'column' : 'row'"
-    >
-      <!-- اطلاعات پرواز -->
-      <div class="col">
-        <div class="row items-center justify-between">
-          <!-- مبدا -->
-          <div class="column items-center">
-            <div class="text-h6">{{ getOriginCity(flight.origin) }}</div>
-            <div class="text-caption text-grey-7">{{ getOriginCode(flight.origin) }}</div>
-          </div>
-
-          <!-- مسیر و شماره پرواز -->
-          <div class="column items-center" style="min-width: 220px">
-            <div class="text-center text-caption text-grey-7 q-mb-xs">
-              {{ flight.flightNumber }}///
-            </div>
-            <div class="row items-center justify-center">
-              <q-separator color="grey-4" style="width: 80px" />
-              <q-icon name="flight" size="24px" class="q-mx-md text-grey-7" />
-              <q-separator color="grey-4" style="width: 80px" />
-            </div>
-            <div class="text-center text-caption text-grey-7 q-mt-xs">{{ flight.date }}</div>
-          </div>
-
-          <!-- مقصد -->
-          <div class="column items-center">
-            <div class="text-h6">{{ getDestinationCity(flight.destination) }}</div>
-            <div class="text-caption text-grey-7">{{ getDestinationCode(flight.destination) }}</div>
-          </div>
-        </div>
-
-        <!-- اطلاعات ظرفیت و قیمت -->
-        <div
-          class="row bg-grey-2 q-mt-md q-pa-sm items-center justify-between"
-          style="border-radius: 8px"
-        >
-          <div class="col text-center">
+    <div class="row q-pa-md items-center" style="min-height: 120px">
+      <!-- Origin (right) -->
+      <div class="col-2 column items-center justify-center">
+        <q-icon name="flight" size="32px" color="primary" class="q-mb-xs" />
+        <div class="text-bold text-h6">({{ getOriginCode(flight.origin) }})</div>
+        <div class="text-subtitle2">{{ getOriginCity(flight.origin) }}</div>
+      </div>
+      <!-- Center: Flight info -->
+      <div class="col-8 column items-center justify-center">
+        <div class="text-h6">{{ flight.flightNumber }}</div>
+        <div class="text-caption text-grey-7 q-mb-xs">{{ flight.date }}</div>
+        <div class="row q-mt-sm q-gutter-md justify-center">
+          <div class="col-auto text-center">
             <div class="text-caption text-grey-7">ظرفیت کل</div>
             <div class="text-h6">{{ flight.seats }}</div>
           </div>
-          <div class="col text-center">
+          <div class="col-auto text-center">
+            <div class="text-caption text-grey-7">تعداد رزروها</div>
+            <div class="text-h6">{{ flight.reservedCount ?? 130 }}</div>
+          </div>
+          <div class="col-auto text-center">
+            <div class="text-caption text-grey-7">تعداد درخواست‌های ثبت‌شده</div>
+            <div class="text-h6">{{ flight.requestCount ?? 15 }}</div>
+          </div>
+          <div class="col-auto text-center">
             <div class="text-caption text-grey-7">قیمت</div>
             <div class="text-h6">{{ flight.price }}</div>
           </div>
         </div>
       </div>
-
-      <!-- جداکننده در دسکتاپ -->
-      <div v-if="$q.screen.gt.xs" class="col-auto flex flex-center" style="height: 100%">
-        <div style="border-left: 2px dashed #e0e0e0; height: 90px"></div>
+      <!-- Destination (left) -->
+      <div class="col-2 column items-center justify-center">
+        <q-icon
+          name="flight"
+          size="32px"
+          color="primary"
+          class="q-mb-xs"
+          style="transform: scaleX(-1)"
+        />
+        <div class="text-bold text-h6">({{ getDestinationCode(flight.destination) }})</div>
+        <div class="text-subtitle2">{{ getDestinationCity(flight.destination) }}</div>
       </div>
-
-      <!-- انتخاب پرواز -->
-      <div class="col-auto column items-center justify-between" style="min-width: 170px">
-        <div class="row items-center justify-end q-mb-md" style="width: 100%">
-          <span class="text-caption text-grey-7 q-ml-xs">مدل هواپیما</span>
-          <span class="text-h6">{{ flight.plane }}</span>
-        </div>
+    </div>
+    <div class="row items-center q-px-md q-pb-md">
+      <div class="col-6 row items-center">
+        <span class="text-caption text-grey-7 q-ml-xs">مدل هواپیما</span>
+        <span class="text-h6">{{ flight.plane }}</span>
+      </div>
+      <div class="col-6 flex flex-center">
         <q-btn
           label="انتخاب پرواز"
-          class="full-width searchbutton"
-          style="min-width: 140px"
+          color="primary"
+          class="full-width"
+          style="max-width: 180px"
           @click="gotoFlightSelected"
         />
       </div>
@@ -91,4 +81,26 @@ const gotoFlightSelected = () => {
   console.log('first')
   router.push('/history-Request')
 }
+
+const getOriginCity = (code) => {
+  const cities = { THR: 'تهران', MHD: 'مشهد', KER: 'کرمان', DXB: 'دبی' }
+  return cities[code] || code
+}
+
+const getOriginCode = (code) => code
+
+const getDestinationCity = (code) => {
+  const cities = { THR: 'تهران', MHD: 'مشهد', KER: 'کرمان', DXB: 'دبی' }
+  return cities[code] || code
+}
+
+const getDestinationCode = (code) => code
 </script>
+
+<style scoped>
+.flight-card {
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #0001;
+  margin-bottom: 8px;
+}
+</style>
