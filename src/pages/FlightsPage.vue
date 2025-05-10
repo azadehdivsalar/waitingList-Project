@@ -48,20 +48,18 @@
             class="q-ml-md"
           />
         </div>
-        <div v-if="isFormComplete" class="q-mt-lg">
-          <div v-if="filteredFlights.length > 0">
-            <div v-for="(flight, idx) in filteredFlights" :key="flight.flightNumber">
-              <FlightCard :flight="flight" />
-              <q-separator
-                v-if="idx < filteredFlights.length - 1"
-                spaced="md"
-                color="grey-4"
-                style="border-style: dashed"
-              />
-            </div>
+        <div v-if="filteredFlights.length > 0">
+          <div v-for="(flight, idx) in filteredFlights" :key="flight.flightNumber">
+            <FlightCard :flight="flight" />
+            <q-separator
+              v-if="idx < filteredFlights.length - 1"
+              spaced="md"
+              color="grey-4"
+              style="border-style: dashed"
+            />
           </div>
-          <div v-else class="text-center text-grey q-mt-md">پروازی با این مشخصات یافت نشد.</div>
         </div>
+        <div v-else class="text-center text-grey q-mt-md">پروازی با این مشخصات یافت نشد.</div>
       </div>
       <div v-else>
         <!-- فیلترها -->
@@ -178,12 +176,16 @@
               <q-btn flat round icon="more_vert" @click.stop="openMenu(props.row.id)" />
               <q-menu v-model="props.row.showMenu" anchor="top end" self="top start" fit>
                 <q-list dense>
-                  <q-item clickable v-close-popup @click="cancelRequest(props.row.id)">
-                    <q-item-section avatar><q-icon name="delete" color="red" /></q-item-section>
+                  <q-item clickable v-close-popup @click="openCancelDialog(props.row.id)">
+                    <q-item-section avatar>
+                      <q-icon name="delete" color="red" />
+                    </q-item-section>
                     <q-item-section class="text-red">لغو درخواست</q-item-section>
                   </q-item>
                   <q-item clickable v-close-popup @click="openEditDialog(props.row)">
-                    <q-item-section avatar><q-icon name="edit" color="green" /></q-item-section>
+                    <q-item-section avatar>
+                      <q-icon name="edit" color="green" />
+                    </q-item-section>
                     <q-item-section>ویرایش</q-item-section>
                   </q-item>
                 </q-list>
@@ -199,66 +201,58 @@
               <q-card-section class="text-h6">ویرایش اطلاعات مسافر</q-card-section>
               <q-btn flat label="بستن" v-close-popup color="negative" class="modalClose text-h6" />
             </div>
-
             <q-card-section class="q-gutter-md" dir="rtl">
-              <div class="row col flex inputmodal justify-between">
-                <q-input v-model="editForm.passenger" label="نام و نام خانوادگی" dense outlined />
+              <div class="row q-gutter-md q-mb-md">
+                <q-input
+                  v-model="editForm.passenger"
+                  label="نام و نام خانوادگی"
+                  dense
+                  outlined
+                  class="col"
+                />
                 <q-select
                   v-model="editForm.priority"
                   :options="priorityOptions"
                   label="اولویت"
                   dense
-                  class="col"
                   outlined
+                  class="col"
                 />
               </div>
-
-              <div class="row col flex inputmodal justify-between" dir="rtl">
-                <div class="col">
-                  <q-input
-                    v-model="editForm.passportNo"
-                    label="کد ملی/شماره پاسپورت"
-                    dense
-                    outlined
-                  />
-                </div>
-                <div class="col">
-                  <q-input v-model="editForm.phone" label="تلفن همراه" dense outlined />
-                </div>
-                <div class="col">
-                  <q-input filled v-model="editForm.birthDate" dense outlined>
-                    <template>
-                      <div class="q-pa-md" style="max-width: 300px" outlined>
-                        <q-input filled v-model="date" mask="date" :rules="['date']">
-                          <template v-slot:append>
-                            <q-icon name="event" class="cursor-pointer">
-                              <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                <q-date v-model="date">
-                                  <div class="row items-center justify-end">
-                                    <q-btn v-close-popup label="Close" color="primary" flat />
-                                  </div>
-                                </q-date>
-                              </q-popup-proxy>
-                            </q-icon>
-                          </template>
-                        </q-input>
-                      </div>
-                    </template>
-                  </q-input>
-                </div>
+              <div class="row q-gutter-md q-mb-md">
+                <q-input
+                  v-model="editForm.passportNo"
+                  label="کد ملی/شماره پاسپورت"
+                  dense
+                  outlined
+                  class="col"
+                />
+                <q-input v-model="editForm.phone" label="تلفن همراه" dense outlined class="col" />
+                <q-input filled v-model="editForm.birthDate" dense outlined class="col">
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-date v-model="editForm.birthDate">
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="بستن" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
               </div>
-
-              <div class="col" dir="rtl">
+              <div class="row q-mb-md">
                 <q-input
                   v-model="editForm.description"
                   type="textarea"
                   label="توضیحات"
                   dense
                   outlined
+                  class="col"
                 />
               </div>
             </q-card-section>
-
             <q-card-actions align="right">
               <q-btn flat class="saveBtn" label="ذخیره" color="positive" @click="saveEdit" />
             </q-card-actions>
@@ -266,6 +260,43 @@
         </q-dialog>
       </div>
     </q-card>
+    <q-dialog v-model="confirmDialog" persistent>
+      <q-card style="min-width: 350px; max-width: 400px" dir="rtl">
+        <div class="row items-center q-pa-sm" dir="rtl">
+          <div class="col"></div>
+          <div class="col-auto">
+            <q-btn
+              flat
+              round
+              dense
+              icon="close"
+              color="negative"
+              v-close-popup
+              style="font-size: 24px"
+            />
+          </div>
+        </div>
+        <q-card-section class="text-center">
+          <div class="text-h6 q-mb-md">آیا از لغو این درخواست مطمئن هستید؟</div>
+        </q-card-section>
+        <q-card-actions vertical align="center" class="q-gutter-md">
+          <q-btn
+            flat
+            label="خیر"
+            color="custom-green"
+            class="text-custom-green border-custom-green"
+            style="width: 70%; height: 40px; font-weight: 500; font-size: 16px; border-radius: 8px"
+            v-close-popup
+          />
+          <q-btn
+            label="لغو درخواست"
+            color="negative"
+            style="width: 70%; height: 40px; font-weight: 500; font-size: 16px; border-radius: 8px"
+            @click="doCancelRequest"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -464,8 +495,17 @@ const openMenu = (id) => {
   })
 }
 
-const cancelRequest = () => {
-  // منطق لغو درخواست
+const confirmDialog = ref(false)
+const cancelId = ref(null)
+
+const openCancelDialog = (id) => {
+  cancelId.value = id
+  confirmDialog.value = true
+}
+
+const doCancelRequest = () => {
+  filteredRequests.value = filteredRequests.value.filter((r) => r.id !== cancelId.value)
+  confirmDialog.value = false
 }
 
 const editDialog = ref(false)
@@ -480,28 +520,19 @@ const editForm = ref({
   description: '',
 })
 
-const openEditDialog = () => {
-  // منطق ویرایش
+const openEditDialog = (row) => {
+  editForm.value = { ...row }
+  editDialog.value = true
 }
 
 const saveEdit = () => {
-  const index = flights.value.findIndex((r) => r.id === editForm.value.id)
-  if (index !== -1) {
-    flights.value[index] = { ...editForm.value }
+  // Update the row in filteredRequests
+  const idx = filteredRequests.value.findIndex((r) => r.id === editForm.value.id)
+  if (idx !== -1) {
+    filteredRequests.value[idx] = { ...editForm.value }
   }
   editDialog.value = false
 }
-
-const isFormComplete = computed(() => {
-  return (
-    filters.value.origin &&
-    filters.value.destination &&
-    filters.value.passenger &&
-    date.value &&
-    filters.value.priority &&
-    filters.value.status
-  )
-})
 
 const filteredFlights = computed(() => {
   return flights.value.filter((flight) => {
@@ -526,5 +557,11 @@ const filteredFlights = computed(() => {
 }
 :deep(.q-tabs__indicator.text-custom-green) {
   background: #01986f !important;
+}
+:deep(.text-custom-green) {
+  color: #01986f !important;
+}
+:deep(.border-custom-green) {
+  border: 1.5px solid #01986f !important;
 }
 </style>
