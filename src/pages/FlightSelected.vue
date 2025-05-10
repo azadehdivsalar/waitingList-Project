@@ -78,7 +78,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useFlightStore } from 'stores/flightStore'
-import FlightCard from 'components/FlightCard.vue' // مسیر صحیح را وارد کنید
+import FlightCard from 'components/FlightCard.vue'
 
 const flightStore = useFlightStore()
 const selectedFlight = flightStore.selectedFlight
@@ -97,3 +97,10 @@ const onSubmit = () => {
   // ...
 }
 </script>
+
+
+
+
+
+
+

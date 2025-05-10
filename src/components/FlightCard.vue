@@ -16,7 +16,7 @@
           <!-- مسیر و شماره پرواز -->
           <div class="column items-center" style="min-width: 220px">
             <div class="text-center text-caption text-grey-7 q-mb-xs">
-              {{ flight.flightNumber }}
+              {{ flight.flightNumber }}///
             </div>
             <div class="row items-center justify-center">
               <q-separator color="grey-4" style="width: 80px" />
