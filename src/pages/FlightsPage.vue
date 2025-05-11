@@ -8,7 +8,7 @@
     </div>
     <q-card class="q-pa-md" dir="rtl">
       <div v-if="tab === 'requestSubmit'">
-        <div class="row items-center q-gutter-md q-mb-md justify-between" dir="rtl">
+        <div class="row items-center q-gutter-md q-mb-md" dir="rtl">
           <q-select
             v-model="filters.origin"
             :options="cities"
@@ -32,20 +32,14 @@
             dense
             class="col-3"
           />
-          <q-btn
-            label="جستجو"
-            icon="search"
-            class="q-ml-sm searchbutton"
-            @click="applyFilters"
-            style="min-width: 100px"
-          />
+          <q-btn label="جستجو" icon="search" class="search-button" @click="applyFilters" />
           <q-btn
             flat
             label="پاک کردن فیلترها"
             color="secondary"
             icon="refresh"
             @click="clearFilters"
-            class="q-ml-md"
+            class="clear-button"
           />
         </div>
         <div v-if="filteredFlights.length > 0">
@@ -63,7 +57,7 @@
       </div>
       <div v-else>
         <!-- فیلترها -->
-        <div class="q-gutter-md row items-center q-mb-md">
+        <div class="filter-section q-gutter-md row items-center">
           <q-select
             v-model="filters.origin"
             :options="cities"
@@ -87,8 +81,7 @@
             dense
             outlined
           />
-
-          <q-input outlined v-model="date" class="col-12 col-md-2">
+          <q-input v-model="date" label="تاریخ" class="col-12 col-md-2" dense outlined>
             <template v-slot:prepend>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -102,7 +95,7 @@
             </template>
           </q-input>
         </div>
-        <div class="row q-gutter-md q-mb-md items-center flex" dir="rtl">
+        <div class="filter-section row q-gutter-md items-center" dir="rtl">
           <q-select
             v-model="filters.priority"
             :options="priorityOptions"
@@ -111,7 +104,6 @@
             class="col-12 col-md-2"
             outlined
           />
-
           <q-select
             v-model="filters.status"
             :options="statusOptions"
@@ -120,15 +112,15 @@
             outlined
             class="col-12 col-md-2"
           />
-          <div class="start-end">
-            <q-btn label="جستجو" @click="applyFilters" class="col-2 searchButton" icon="search" />
+          <div class="filter-buttons">
+            <q-btn label="جستجو" @click="applyFilters" class="search-button" icon="search" />
             <q-btn
               flat
               label="پاک کردن فیلترها"
               color="secondary"
               icon="clear"
               @click="clearFilters"
-              class="clrbutton"
+              class="clear-button"
             />
           </div>
         </div>
@@ -146,26 +138,8 @@
         >
           <template v-slot:body-cell-badge="props">
             <q-td align="center">
-              <q-badge
-                v-if="props.row.status === 'در انتظار بررسی'"
-                style="
-                  background: #01986f;
-                  width: 12px;
-                  height: 12px;
-                  border-radius: 50%;
-                  padding: 0;
-                "
-              />
-              <q-badge
-                v-else-if="props.row.status === 'عدم پذیرش'"
-                style="
-                  background: #ff0000;
-                  width: 12px;
-                  height: 12px;
-                  border-radius: 50%;
-                  padding: 0;
-                "
-              />
+              <q-badge v-if="props.row.status === 'در انتظار بررسی'" class="status-badge pending" />
+              <q-badge v-else-if="props.row.status === 'عدم پذیرش'" class="status-badge rejected" />
             </q-td>
           </template>
           <div class="q-pa-lg flex flex-center">
@@ -196,19 +170,19 @@
 
         <!-- دیالوگ ویرایش -->
         <q-dialog v-model="editDialog" class="q-gutter-md" dir="rtl">
-          <q-card class="modal q-pa-md" style="max-width: 800px" dir="rtl">
-            <div class="q-gutter-md row items-center q-mb-md">
+          <q-card class="modal q-pa-md" dir="rtl">
+            <div class="modal-header">
               <q-card-section class="text-h6">ویرایش اطلاعات مسافر</q-card-section>
-              <q-btn flat label="بستن" v-close-popup color="negative" class="modalClose text-h6" />
+              <q-btn flat label="بستن" v-close-popup color="negative" class="modal-close" />
             </div>
             <q-card-section class="q-gutter-md" dir="rtl">
-              <div class="row q-gutter-md q-mb-md">
+              <div class="form-row">
                 <q-input
                   v-model="editForm.passenger"
                   label="نام و نام خانوادگی"
                   dense
                   outlined
-                  class="col"
+                  class="form-field"
                 />
                 <q-select
                   v-model="editForm.priority"
@@ -216,19 +190,31 @@
                   label="اولویت"
                   dense
                   outlined
-                  class="col"
+                  class="form-field"
                 />
               </div>
-              <div class="row q-gutter-md q-mb-md">
+              <div class="form-row">
                 <q-input
                   v-model="editForm.passportNo"
                   label="کد ملی/شماره پاسپورت"
                   dense
                   outlined
-                  class="col"
+                  class="form-field"
                 />
-                <q-input v-model="editForm.phone" label="تلفن همراه" dense outlined class="col" />
-                <q-input filled v-model="editForm.birthDate" dense outlined class="col">
+                <q-input
+                  v-model="editForm.phone"
+                  label="تلفن همراه"
+                  dense
+                  outlined
+                  class="form-field"
+                />
+                <q-input
+                  v-model="editForm.birthDate"
+                  label="تاریخ تولد"
+                  dense
+                  outlined
+                  class="form-field"
+                >
                   <template v-slot:append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -242,19 +228,19 @@
                   </template>
                 </q-input>
               </div>
-              <div class="row q-mb-md">
+              <div class="form-row">
                 <q-input
                   v-model="editForm.description"
                   type="textarea"
                   label="توضیحات"
                   dense
                   outlined
-                  class="col"
+                  class="form-field"
                 />
               </div>
             </q-card-section>
             <q-card-actions align="right">
-              <q-btn flat class="saveBtn" label="ذخیره" color="positive" @click="saveEdit" />
+              <q-btn flat class="search-button" label="ذخیره" color="positive" @click="saveEdit" />
             </q-card-actions>
           </q-card>
         </q-dialog>
@@ -303,18 +289,27 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import FlightCard from '../components/FlightCard.vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 
 const tab = ref('requestSubmit')
 const date = ref('')
 const router = useRouter()
 const route = useRoute()
 
-// تنظیم تب بر اساس مسیر فعلی
+// تغییر مسیر با تغییر تب
+watch(tab, (newTab) => {
+  if (newTab === 'requestHistory') {
+    router.push({ path: '/history-request' })
+  } else {
+    router.push({ path: '/' })
+  }
+})
+
+// ست کردن تب با توجه به مسیر فعلی
 watch(
   () => route.path,
   (newPath) => {
-    if (newPath === '/history-Request') {
+    if (newPath === '/history-request') {
       tab.value = 'requestHistory'
     } else {
       tab.value = 'requestSubmit'
@@ -323,13 +318,14 @@ watch(
   { immediate: true },
 )
 
-// تغییر مسیر بر اساس تغییر تب
-watch(tab, (newTab) => {
-  if (newTab === 'requestHistory') {
-    router.push('/history-Request')
+// جلوگیری از تغییر مسیر مستقیم
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.path === '/history-request') {
+    tab.value = 'requestHistory'
   } else {
-    router.push('/')
+    tab.value = 'requestSubmit'
   }
+  next()
 })
 
 const filters = ref({
@@ -378,7 +374,7 @@ const columns = [
     name: 'route',
     label: 'مسیر پرواز',
     align: 'center',
-    field: (row) => `${row.origin} - ${row.destination}`,
+    field: (row) => `${getOriginCity(row.origin)}-${getDestinationCity(row.destination)}`,
   },
   { name: 'flightTime', label: 'زمان پرواز', align: 'center', field: 'flightTime' },
   { name: 'flightNo', label: 'شماره پرواز', align: 'center', field: 'flightNo' },
@@ -539,14 +535,12 @@ const filteredFlights = computed(() => {
     const originMatch =
       !filters.value.origin ||
       flight.origin === filters.value.origin ||
-      getOriginCity(flight.origin) === filters.value.origin ||
-      getOriginCode(flight.origin) === filters.value.origin
+      getOriginCity(flight.origin) === filters.value.origin
 
     const destinationMatch =
       !filters.value.destination ||
       flight.destination === filters.value.destination ||
-      getDestinationCity(flight.destination) === filters.value.destination ||
-      getDestinationCode(flight.destination) === filters.value.destination
+      getDestinationCity(flight.destination) === filters.value.destination
 
     return originMatch && destinationMatch
   })
@@ -557,14 +551,10 @@ const getOriginCity = (code) => {
   return cities[code] || code
 }
 
-const getOriginCode = (code) => code
-
 const getDestinationCity = (code) => {
   const cities = { THR: 'تهران', MHD: 'مشهد', KER: 'کرمان', DXB: 'دبی' }
   return cities[code] || code
 }
-
-const getDestinationCode = (code) => code
 </script>
 
 <style scoped>
@@ -578,13 +568,114 @@ const getDestinationCode = (code) => code
   color: #01986f !important;
   border-color: #01986f !important;
 }
+
 :deep(.q-tabs__indicator.text-custom-green) {
   background: #01986f !important;
 }
+
 :deep(.text-custom-green) {
   color: #01986f !important;
 }
+
 :deep(.border-custom-green) {
   border: 1.5px solid #01986f !important;
+}
+
+/* استایل‌های جدید */
+.status-badge {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.status-badge.pending {
+  background: #01986f;
+}
+
+.status-badge.rejected {
+  background: #ff0000;
+}
+
+.filter-section {
+  margin-bottom: 1rem;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-right: auto;
+}
+
+.search-button {
+  min-width: 120px;
+  height: 40px;
+  background: #01986f;
+  color: white;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 20px;
+}
+
+.search-button:hover {
+  background: #018060;
+}
+
+.clear-button {
+  min-width: 120px;
+  height: 40px;
+  color: #666;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 20px;
+}
+
+.clear-button:hover {
+  background: #f5f5f5;
+}
+
+.modal {
+  max-width: 800px;
+  width: 100%;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-close {
+  font-size: 1.25rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-field {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .filter-buttons {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .search-button,
+  .clear-button {
+    flex: 1;
+  }
 }
 </style>

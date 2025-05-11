@@ -13,7 +13,7 @@ const routes = [
         component: () => import('pages/FlightsPage.vue'),
       },
       {
-        path: 'history-Request',
+        path: 'history-request',
         name: 'historyRequest',
         component: () => import('pages/historyRequest.vue'),
         beforeEnter: (to, from, next) => {

@@ -2,7 +2,7 @@
   <q-card class="flight-card q-pa-none" dir="rtl" style="overflow: visible">
     <div class="row q-pa-md items-center" style="min-height: 120px; position: relative">
       <!-- لوگوی مبدا (سمت راست) -->
-      <div class="col-3 column items-center justify-center">
+      <div class="col-1 column items-center justify-center">
         <img
           src="../assets/icons/Vector.png"
           alt="logo"
@@ -12,7 +12,7 @@
       <!-- خط چین عمودی -->
       <!-- <div class="vertical-dashed"></div> -->
       <!-- وسط: اطلاعات پرواز -->
-      <div class="col-6 column items-center justify-center">
+      <div class="col-8 column items-center justify-center">
         <div class="row items-center justify-between full-width">
           <div class="text-bold text-h6">
             ({{ getDestinationCode(flight.destination) }})

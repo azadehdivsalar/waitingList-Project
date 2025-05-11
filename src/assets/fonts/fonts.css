@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'IRANYEKAN';
+  src:
+    url('./IRANYEKAN/IRANYEKAN.woff2') format('woff2'),
+    url('./IRANYEKAN/IRANYEKAN.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IRANYEKAN';
+  src:
+    url('./IRANYEKAN/IRANYEKAN-BOLD.woff2') format('woff2'),
+    url('./IRANYEKAN/IRANYEKAN-BOLD.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IRANYEKAN';
+  src:
+    url('./IRANYEKAN/IRANYEKAN-LIGHT.woff2') format('woff2'),
+    url('./IRANYEKAN/IRANYEKAN-LIGHT.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IRANYEKAN';
+  src:
+    url('./IRANYEKAN/IRANYEKAN-MEDIUM.woff2') format('woff2'),
+    url('./IRANYEKAN/IRANYEKAN-MEDIUM.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* تعریف فونت پیش‌فرض برای کل پروژه */
+:root {
+  --font-family: 'IRANYEKAN', sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+}
