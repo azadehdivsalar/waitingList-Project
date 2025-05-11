@@ -13,12 +13,12 @@
       <!-- <div class="vertical-dashed"></div> -->
       <!-- وسط: اطلاعات پرواز -->
       <div class="col-6 column items-center justify-center">
-        <div class="row items-center justify-between">
+        <div class="row items-center justify-between full-width">
           <div class="text-bold text-h6">
             ({{ getDestinationCode(flight.destination) }})
             {{ getDestinationCity(flight.destination) }}
           </div>
-          <div class="text-h6">{{ flight.flightNumber }}</div>
+          <div class="horizontal-line"></div>
           <div class="text-bold text-h6">
             ({{ getOriginCode(flight.origin) }}) {{ getOriginCity(flight.origin) }}
           </div>
@@ -141,5 +141,12 @@ const gotoFlightSelected = () => {
 .info-value {
   font-weight: bold;
   color: #222;
+}
+.horizontal-line {
+  flex: 1 1 0;
+  height: 2px;
+  background: #e0e0e0;
+  margin: 0 12px;
+  border-radius: 1px;
 }
 </style>

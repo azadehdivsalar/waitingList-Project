@@ -536,12 +536,35 @@ const saveEdit = () => {
 
 const filteredFlights = computed(() => {
   return flights.value.filter((flight) => {
-    return (
-      (!filters.value.origin || flight.origin === filters.value.origin) &&
-      (!filters.value.destination || flight.destination === filters.value.destination)
-    )
+    const originMatch =
+      !filters.value.origin ||
+      flight.origin === filters.value.origin ||
+      getOriginCity(flight.origin) === filters.value.origin ||
+      getOriginCode(flight.origin) === filters.value.origin
+
+    const destinationMatch =
+      !filters.value.destination ||
+      flight.destination === filters.value.destination ||
+      getDestinationCity(flight.destination) === filters.value.destination ||
+      getDestinationCode(flight.destination) === filters.value.destination
+
+    return originMatch && destinationMatch
   })
 })
+
+const getOriginCity = (code) => {
+  const cities = { THR: 'تهران', MHD: 'مشهد', KER: 'کرمان', DXB: 'دبی' }
+  return cities[code] || code
+}
+
+const getOriginCode = (code) => code
+
+const getDestinationCity = (code) => {
+  const cities = { THR: 'تهران', MHD: 'مشهد', KER: 'کرمان', DXB: 'دبی' }
+  return cities[code] || code
+}
+
+const getDestinationCode = (code) => code
 </script>
 
 <style scoped>
