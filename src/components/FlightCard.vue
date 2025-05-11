@@ -10,10 +10,10 @@
         />
       </div>
       <!-- خط چین عمودی -->
-      <div class="vertical-dashed"></div>
+      <!-- <div class="vertical-dashed"></div> -->
       <!-- وسط: اطلاعات پرواز -->
       <div class="col-6 column items-center justify-center">
-        <div class="row items-center justify-between full-width">
+        <div class="row items-center justify-between">
           <div class="text-bold text-h6">
             ({{ getDestinationCode(flight.destination) }})
             {{ getDestinationCity(flight.destination) }}
@@ -30,10 +30,9 @@
         </div>
         <div class="text-caption text-grey-7 q-mt-xs">{{ flight.date }}</div>
       </div>
-      <!-- خط چین عمودی -->
       <div class="vertical-dashed"></div>
-      <!-- ستون چپ: مدل هواپیما و باکس اطلاعات -->
-      <div class="col-3 column items-center justify-center">
+      <!-- خط چین عمودی -->
+      <div class="col-2 column items-center justify-center">
         <div class="text-h6 q-mb-xs">{{ flight.plane }}</div>
         <div class="info-boxes">
           <div class="info-box">
@@ -52,12 +51,13 @@
         <q-btn
           v-if="showSelectButton"
           label="انتخاب پرواز"
-          color="primary"
-          class="full-width q-mt-md"
+          class="q-mt-md searchbutton"
           style="max-width: 180px"
           @click="gotoFlightSelected"
         />
       </div>
+
+      <!-- ستون چپ: مدل هواپیما و باکس اطلاعات -->
     </div>
   </q-card>
 </template>
@@ -106,7 +106,7 @@ const gotoFlightSelected = () => {
 }
 .vertical-dashed {
   width: 2px;
-  height: 90px;
+  height: 100px;
   background: repeating-linear-gradient(
     to bottom,
     #d3d3d3,

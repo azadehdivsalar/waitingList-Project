@@ -15,11 +15,11 @@
             />
             <span class="text-negative">حذف مسافر</span>
           </div>
-          <div class="row q-gutter-md q-mb-md">
+          <div class="row q-gutter-md q-mb-md" >
             <q-input
               v-model="passenger.name"
               label="نام و نام خانوادگی"
-              class="col"
+              class="col-4"
               outlined
               dense
             />
@@ -27,7 +27,7 @@
               v-model="passenger.priority"
               :options="priorityOptions"
               label="اولویت"
-              class="col"
+              class="col-4"
               outlined
               dense
             />
