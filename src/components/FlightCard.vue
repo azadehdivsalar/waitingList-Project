@@ -15,26 +15,18 @@
       <div class="col-8 column items-center justify-center">
         <div class="row items-center justify-between full-width">
           <div class="text-bold text-h6">
-            ({{ getDestinationCode(flight.destination) }})
-            {{ getDestinationCity(flight.destination) }}
-          </div>
-          <div class="horizontal-line"></div>
-          <div class="text-bold text-h6">
             ({{ getOriginCode(flight.origin) }}) {{ getOriginCity(flight.origin) }}
           </div>
-        </div>
-        <div class="row items-center justify-between full-width q-mt-xs">
-          <div class="text-caption text-grey-7">{{ flight.arrivalTime }}</div>
+          <div class="horizontal-line"></div>
           <q-icon name="flight_takeoff" size="24px" color="grey-6" />
-          <div class="text-caption text-grey-7">{{ flight.departureTime }}</div>
+          <div class="horizontal-line"></div>
+          <div class="text-bold text-h6 column items-center">
+            ({{ getDestinationCode(flight.destination) }})
+            {{ getDestinationCity(flight.destination) }}
+            <div class="text-caption text-grey-7 q-mt-xs">{{ flight.arrivalTime }}</div>
+          </div>
         </div>
-        <div class="text-caption text-grey-7 q-mt-xs">{{ flight.date }}</div>
-      </div>
-      <div class="vertical-dashed"></div>
-      <!-- خط چین عمودی -->
-      <div class="col-2 column items-center justify-center">
-        <div class="text-h6 q-mb-xs">{{ flight.plane }}</div>
-        <div class="info-boxes">
+        <div class="row items-center justify-between full-width q-mt-sm">
           <div class="info-box">
             <span class="info-label">ظرفیت کل:</span>
             <span class="info-value">{{ flight.seats }}</span>
@@ -44,10 +36,16 @@
             <span class="info-value">{{ flight.reservedCount }}</span>
           </div>
           <div class="info-box">
-            <span class="info-label">درخواست‌های ستادی:</span>
+            <span class="info-label">تعداد درخواست‌های ستادی:</span>
             <span class="info-value">{{ flight.requestCount }}</span>
           </div>
         </div>
+        <div class="text-caption text-grey-7 q-mt-xs">{{ flight.date }}</div>
+      </div>
+      <div class="vertical-dashed"></div>
+      <!-- خط چین عمودی -->
+      <div class="col-2 column items-center justify-center">
+        <div class="text-h6 q-mb-xs">{{ flight.plane }}</div>
         <q-btn
           v-if="showSelectButton"
           label="انتخاب پرواز"
@@ -76,11 +74,6 @@ const { flight, showSelectButton } = defineProps({
 const router = useRouter()
 const flightStore = useFlightStore()
 
-const getOriginCity = (code) => {
-  const cities = { THR: 'تهران', MHD: 'مشهد', KER: 'کرمان', DXB: 'دبی' }
-  return cities[code] || code
-}
-
 const getOriginCode = (code) => code
 
 const getDestinationCity = (code) => {
@@ -89,6 +82,11 @@ const getDestinationCity = (code) => {
 }
 
 const getDestinationCode = (code) => code
+
+const getOriginCity = (code) => {
+  const cities = { THR: 'تهران', MHD: 'مشهد', KER: 'کرمان', DXB: 'دبی' }
+  return cities[code] || code
+}
 
 const gotoFlightSelected = () => {
   flightStore.setSelectedFlight(flight)
@@ -118,24 +116,23 @@ const gotoFlightSelected = () => {
   border-radius: 1px;
 }
 .info-boxes {
-  width: 120px;
+  width: 100%;
   background: #f5f5f5;
   border-radius: 8px;
-  padding: 8px 0;
-  align-items: center;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 .info-box {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  align-items: center;
+  gap: 4px;
   font-size: 14px;
   color: #333;
 }
 .info-label {
-  color: #888;
+  color: #666;
   font-size: 13px;
 }
 .info-value {
