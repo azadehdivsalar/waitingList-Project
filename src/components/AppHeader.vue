@@ -2,16 +2,15 @@
   <div class="header">
     <div class="header-content">
       <div class="logo">
-        <q-icon name="flight" size="32px" color="primary" />
-        <span class="logo-text">سیستم لیست انتظار</span>
+        <span class="logo-text"> سامانه ثبت درخواست لیست انتظار </span>
       </div>
       <div class="user-info">
         <q-btn flat class="user-button">
           <q-avatar size="32px" color="primary" text-color="white">
             <q-icon name="person" />
           </q-avatar>
-          <span class="user-name">آزاده دیوسالار</span>
           <q-icon name="expand_more" />
+          <span class="user-name">آزاده دیوسالار</span>
         </q-btn>
       </div>
     </div>

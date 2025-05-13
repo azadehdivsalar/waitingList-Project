@@ -107,71 +107,55 @@
       <!-- دیالوگ ویرایش -->
       <q-dialog v-model="editDialog" class="q-gutter-md" dir="rtl">
         <q-card class="modal q-pa-md" style="max-width: 800px" dir="rtl">
-          <div class="q-gutter-md row items-center q-mb-md">
+          <div class="q-gutter-md row items-center q-mb-md justify-between">
             <q-card-section class="text-h6">ویرایش اطلاعات مسافر</q-card-section>
             <q-btn flat label="بستن" v-close-popup color="negative" class="modalClose text-h6" />
           </div>
 
-          <q-card-section class="q-gutter-md" dir="rtl">
-            <div class="row col flex inputmodal justify-between">
-              <q-input v-model="editForm.passenger" label="نام و نام خانوادگی" dense outlined />
+          <q-card-section class="q-gutter-sm" dir="rtl">
+            <div class="row q-gutter-sm q-mb-sm">
+              <q-input
+                v-model="editForm.passenger"
+                label="نام و نام خانوادگی"
+                dense
+                outlined
+                class="col"
+              />
               <q-select
                 v-model="editForm.priority"
                 :options="priorityOptions"
                 label="اولویت"
                 dense
-                class="col"
                 outlined
+                class="col"
               />
             </div>
-
-            <div class="row col flex inputmodal justify-between" dir="rtl">
-              <div class="col">
-                <q-input
-                  v-model="editForm.passportNo"
-                  label="کد ملی/شماره پاسپورت"
-                  dense
-                  outlined
-                />
-              </div>
-              <div class="col">
-                <q-input v-model="editForm.phone" label="تلفن همراه" dense outlined />
-              </div>
-              <div class="col">
-                <q-input filled v-model="editForm.birthDate" dense outlined>
-                  <template>
-                    <div class="q-pa-md" style="max-width: 300px" outlined>
-                      <q-input filled v-model="date" mask="date" :rules="['date']">
-                        <template v-slot:append>
-                          <q-icon name="event" class="cursor-pointer">
-                            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                              <q-date v-model="date">
-                                <div class="row items-center justify-end">
-                                  <q-btn v-close-popup label="Close" color="primary" flat />
-                                </div>
-                              </q-date>
-                            </q-popup-proxy>
-                          </q-icon>
-                        </template>
-                      </q-input>
-                    </div>
-                  </template>
-                </q-input>
-              </div>
-            </div>
-
-            <div class="col" dir="rtl">
+            <div class="row q-gutter-sm q-mb-sm">
+              <q-input v-model="editForm.birthDate" label="تاریخ تولد" dense outlined class="col">
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer" />
+                </template>
+              </q-input>
+              <q-input v-model="editForm.phone" label="تلفن همراه" dense outlined class="col" />
               <q-input
-                v-model="editForm.description"
-                type="textarea"
-                label="توضیحات"
+                v-model="editForm.passportNo"
+                label="کد ملی/شماره پاسپورت"
                 dense
                 outlined
+                class="col"
               />
             </div>
+            <q-input
+              v-model="editForm.description"
+              type="textarea"
+              label="توضیحات"
+              dense
+              outlined
+              class="q-mb-sm"
+            />
           </q-card-section>
 
-          <q-card-actions align="right">
+          <q-card-actions align="right" class="q-mt-sm">
             <q-btn flat class="saveBtn" label="ذخیره" color="positive" @click="saveEdit" />
           </q-card-actions>
         </q-card>

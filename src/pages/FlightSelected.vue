@@ -3,64 +3,75 @@
     <FlightCard :flight="selectedFlight" :showSelectButton="false" />
     <div class="q-mt-lg" dir="rtl">
       <div class="text-h6 q-mb-md">اطلاعات مسافر</div>
-      <q-card class="q-pa-md">
-        <div class="row q-gutter-md q-mb-md">
-          <q-input
-            v-model="passengers[0].name"
-            label="نام و نام خانوادگی"
-            class="col-3"
-            outlined
-            dense
-          />
-          <q-select
-            v-model="passengers[0].priority"
-            :options="priorityOptions"
-            label="اولویت"
-            class="col-3"
-            outlined
-            dense
-          />
-        </div>
-        <div class="row q-gutter-md q-mb-md" dir="rtl">
-          <q-input v-model="passengers[0].birthDate" label="تاریخ تولد" class="col-3" outlined dense>
-            <template v-slot:append>
-              <q-icon name="event" class="cursor-pointer" />
-            </template>
-          </q-input>
-          <q-input v-model="passengers[0].phone" label="تلفن همراه" class="col-3" outlined dense />
-          <q-input
-            v-model="passengers[0].passportNo"
-            label="کد ملی/ شماره پاسپورت"
-            class="col-3"
-            outlined
-            dense
-          />
-        </div>
-        <q-input
-          v-model="passengers[0].description"
-          label="توضیحات"
-          type="textarea"
-          outlined
-          dense
-        />
-      </q-card>
-      <div class="row q-mt-md items-center justify-between" dir="rtl">
-        <q-btn color="positive" label="ثبت" icon="check" />
-
+      <div
+        v-for="(passenger, idx) in passengers"
+        :key="passenger.id"
+        :ref="(el) => (passengerRefs[idx] = el)"
+        class="q-mb-md"
+      >
+        <q-card class="q-pa-md">
+          <div class="row items-center q-mb-md">
+            <q-btn
+              flat
+              icon="delete"
+              color="negative"
+              class="q-ml-sm"
+              @click="removePassenger(idx)"
+            />
+            <span class="text-negative">حذف مسافر</span>
+          </div>
+          <div class="row q-gutter-md q-mb-md" >
+            <q-input
+              v-model="passenger.name"
+              label="نام و نام خانوادگی"
+              class="col-4"
+              outlined
+              dense
+            />
+            <q-select
+              v-model="passenger.priority"
+              :options="priorityOptions"
+              label="اولویت"
+              class="col-4"
+              outlined
+              dense
+            />
+          </div>
+          <div class="row q-gutter-md q-mb-md">
+            <q-input v-model="passenger.birthDate" label="تاریخ تولد" class="col" outlined dense>
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer" />
+              </template>
+            </q-input>
+            <q-input v-model="passenger.phone" label="تلفن همراه" class="col" outlined dense />
+            <q-input
+              v-model="passenger.passportNo"
+              label="کد ملی/ شماره پاسپورت"
+              class="col"
+              outlined
+              dense
+            />
+          </div>
+          <q-input v-model="passenger.description" label="توضیحات" type="textarea" outlined dense />
+        </q-card>
+      </div>
+      <div class="row q-mt-md items-center">
         <q-btn
           outline
+          color="primary"
           icon="person_add"
           label="افزودن مسافر جدید"
-          class="q-ml-md "
-          @click="addPassenger"
+          class="q-ml-md"
+          @click="addPassengerAndScroll"
         />
+        <q-btn color="positive" label="ثبت" icon="check" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import FlightCard from 'src/components/FlightCard.vue'
 import { useFlightStore } from 'src/stores/flightStore'
 
@@ -81,7 +92,9 @@ const passengers = ref([
   },
 ])
 
-const addPassenger = () => {
+const passengerRefs = ref([])
+
+const addPassengerAndScroll = () => {
   passengers.value.push({
     id: Date.now() + Math.random(),
     name: '',
@@ -90,6 +103,13 @@ const addPassenger = () => {
     phone: '',
     passportNo: '',
     description: '',
+  })
+  nextTick(() => {
+    const lastIdx = passengers.value.length - 1
+    const el = passengerRefs.value[lastIdx]
+    if (el && el.scrollIntoView) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
   })
 }
 
