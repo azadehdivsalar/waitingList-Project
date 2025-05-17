@@ -296,22 +296,13 @@ const date = ref('')
 const router = useRouter()
 const route = useRoute()
 
-// تغییر مسیر با تغییر تب
-watch(tab, (newTab) => {
-  if (newTab === 'requestHistory') {
-    router.push({ path: '/history-request' })
-  } else {
-    router.push({ path: '/' })
-  }
-})
-
 // ست کردن تب با توجه به مسیر فعلی
 watch(
   () => route.path,
   (newPath) => {
     if (newPath === '/history-request') {
       tab.value = 'requestHistory'
-    } else {
+    } else if (newPath === '/') {
       tab.value = 'requestSubmit'
     }
   },
@@ -322,7 +313,7 @@ watch(
 onBeforeRouteUpdate((to, from, next) => {
   if (to.path === '/history-request') {
     tab.value = 'requestHistory'
-  } else {
+  } else if (to.path === '/') {
     tab.value = 'requestSubmit'
   }
   next()
@@ -389,7 +380,7 @@ const filteredRequests = ref([
     id: 1,
     passenger: 'آزاده دیوسالار',
     origin: 'تهران',
-    destination: 'مشهد',
+    destination: 'دبی',
     flightTime: '1403/12/08 - 15:30',
     flightNo: 'W51344',
     requestTime: '1403/12/08 - 10:30',
@@ -411,9 +402,9 @@ const filteredRequests = ref([
   },
   {
     id: 3,
-    passenger: 'پروانه خیبرپور',
+    passenger: 'میلاد وایانی',
     origin: 'تهران',
-    destination: 'مشهد',
+    destination: 'تبریز',
     flightTime: '1403/12/08 - 15:30',
     flightNo: 'W51344',
     requestTime: '1403/12/08 - 10:30',
@@ -423,9 +414,9 @@ const filteredRequests = ref([
   },
   {
     id: 4,
-    passenger: 'سیدمحمد احمدی',
+    passenger: 'محمدرضا متقی',
     origin: 'تهران',
-    destination: 'کرمان',
+    destination: 'شیراز',
     flightTime: '1403/12/09 - 10:30',
     flightNo: 'W51344',
     requestTime: '1403/12/09 - 10:30',
@@ -435,9 +426,9 @@ const filteredRequests = ref([
   },
   {
     id: 5,
-    passenger: 'سیدمحمد احمدی',
+    passenger: 'علی حلاجی',
     origin: 'تهران',
-    destination: 'کرمان',
+    destination: 'اصفهان',
     flightTime: '1403/12/09 - 10:30',
     flightNo: 'W51344',
     requestTime: '1403/12/09 - 10:30',

@@ -30,6 +30,10 @@ const routes = [
         name: 'flightSelected',
         component: () => import('pages/FlightSelected.vue'),
       },
+      {
+        path: '/station-manager-panel',
+        component: () => import('pages/StationManagerPanel.vue')
+      }
     ],
   },
 
