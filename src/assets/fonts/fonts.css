@@ -38,7 +38,6 @@
   font-display: swap;
 }
 
-/* تعریف فونت پیش‌فرض برای کل پروژه */
 :root {
   --font-family: 'IRANYEKAN', sans-serif;
 }

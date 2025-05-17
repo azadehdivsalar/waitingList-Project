@@ -33,7 +33,7 @@
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                 <q-date v-model="date">
                   <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="بستن" color="primary" flat />
+                    <q-btn v-close-popup dense color="primary" flat />
                   </div>
                 </q-date>
               </q-popup-proxy>
@@ -85,6 +85,25 @@
         <div class="q-pa-lg flex flex-center">
           <q-pagination v-model="current" :max="5" direction-links />
         </div>
+        <template v-slot:body-cell-passenger="props">
+          <q-td :props="props" class="q-pa-none">
+            <div class="row items-center justify-center">
+              <span>{{ props.row.passenger }}</span>
+              <q-badge
+                v-if="props.row.status === 'در انتظار بررسی'"
+                color="green"
+                rounded
+                style="width: 10px; height: 10px; min-width: 10px; padding: 0; margin-right: 8px"
+              />
+              <q-badge
+                v-else-if="props.row.status === 'عدم پذیرش'"
+                color="red"
+                rounded
+                style="width: 10px; height: 10px; min-width: 10px; padding: 0; margin-right: 8px"
+              />
+            </div>
+          </q-td>
+        </template>
         <template v-slot:body-cell-action="props">
           <q-td align="center">
             <q-btn flat round icon="more_vert" @click.stop="openMenu(props.row.id)" />
@@ -109,7 +128,15 @@
         <q-card class="modal q-pa-md" style="max-width: 800px" dir="rtl">
           <div class="q-gutter-md row items-center q-mb-md justify-between">
             <q-card-section class="text-h6">ویرایش اطلاعات مسافر</q-card-section>
-            <q-btn flat label="بستن" v-close-popup color="negative" class="modalClose text-h6" />
+            <q-btn
+              flat
+              dense
+              round
+              icon="close"
+              v-close-popup
+              color="negative"
+              class="modalClose"
+            />
           </div>
 
           <q-card-section class="q-gutter-sm" dir="rtl">
@@ -166,20 +193,10 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-// import { watch } from 'vue'
-// import { useRouter } from 'vue-router'
 
 const tab = ref('requestHistory')
 const date = ref('')
-// const router = useRouter()
 
-// watch(tab, (val) => {
-//   if (val === 'requestHistory') {
-//     router.push('/flights/history')
-//   } else {
-//     router.push('/flights')
-//   }
-// })
 const filters = ref({
   passenger: '',
   origin: '',
@@ -291,3 +308,13 @@ const saveEdit = () => {
   editDialog.value = false
 }
 </script>
+
+<style scoped>
+th,
+td {
+  height: 48px !important;
+  vertical-align: middle !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+</style>

@@ -20,7 +20,7 @@
             />
             <span class="text-negative">حذف مسافر</span>
           </div>
-          <div class="row q-gutter-md q-mb-md" >
+          <div class="row q-gutter-md q-mb-md" dir="rtl">
             <q-input
               v-model="passenger.name"
               label="نام و نام خانوادگی"
@@ -37,13 +37,7 @@
               dense
             />
           </div>
-          <div class="row q-gutter-md q-mb-md">
-            <q-input v-model="passenger.birthDate" label="تاریخ تولد" class="col" outlined dense>
-              <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer" />
-              </template>
-            </q-input>
-            <q-input v-model="passenger.phone" label="تلفن همراه" class="col" outlined dense />
+          <div class="row q-gutter-md q-mb-md" dir="rtl">
             <q-input
               v-model="passenger.passportNo"
               label="کد ملی/ شماره پاسپورت"
@@ -51,11 +45,18 @@
               outlined
               dense
             />
+            <q-input v-model="passenger.phone" label="تلفن همراه" class="col-4" outlined dense />
+
+            <q-input v-model="passenger.birthDate" label="تاریخ تولد" class="col-4" outlined dense>
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer" />
+              </template>
+            </q-input>
           </div>
           <q-input v-model="passenger.description" label="توضیحات" type="textarea" outlined dense />
         </q-card>
       </div>
-      <div class="row q-mt-md items-center">
+      <div class="row q-mt-md items-center justify-between" dir="rtl">
         <q-btn
           outline
           color="primary"
@@ -64,9 +65,22 @@
           class="q-ml-md"
           @click="addPassengerAndScroll"
         />
-        <q-btn color="positive" label="ثبت" icon="check" />
+        <q-btn class="searchbutton" label="ثبت" icon="check" @click="submit" />
       </div>
     </div>
+    <q-dialog v-model="showSuccessDialog" persistent>
+      <q-card style="min-width: 300px; max-width: 350px; text-align: center">
+        <q-card-section>
+          <q-icon name="check_circle" color="positive" size="64px" />
+        </q-card-section>
+        <q-card-section>
+          <div class="text-h6">درخواست شما با موفقیت ثبت شد.</div>
+        </q-card-section>
+        <q-card-actions align="center">
+          <q-btn flat label="تایید" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -93,6 +107,13 @@ const passengers = ref([
 ])
 
 const passengerRefs = ref([])
+
+const showSuccessDialog = ref(false)
+
+const submit = () => {
+  // اعتبارسنجی یا ارسال اطلاعات
+  showSuccessDialog.value = true
+}
 
 const addPassengerAndScroll = () => {
   passengers.value.push({
