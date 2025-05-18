@@ -9,8 +9,14 @@ const routes = [
     children: [
       {
         path: '',
+        component: () => import('pages/IndexPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'flights',
         name: 'flights',
         component: () => import('pages/FlightsPage.vue'),
+        meta: { requiresAuth: true },
       },
       {
         path: 'history-request',
@@ -31,12 +37,17 @@ const routes = [
         component: () => import('pages/FlightSelected.vue'),
       },
       {
-        path: '/station-manager-panel',
-        component: () => import('pages/StationManagerPanel.vue')
-      }
+        path: 'station-manager',
+        component: () => import('pages/StationManagerPanel.vue'),
+        meta: { requiresAuth: true, requiresStationManager: true },
+      },
     ],
   },
-
+  {
+    path: '/login',
+    component: () => import('pages/LoginPage.vue'),
+    meta: { requiresGuest: true },
+  },
   // Always leave this as last one,
   {
     path: '/:catchAll(.*)*',
