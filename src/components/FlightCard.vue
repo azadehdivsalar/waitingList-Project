@@ -1,5 +1,5 @@
 <template>
-  <q-card class="flight-card q-pa-none" dir="rtl" style="overflow: visible">
+  <q-card v-if="flight" class="flight-card q-pa-none" dir="rtl" style="overflow: visible">
     <div class="row q-pa-md items-center" style="min-height: 120px; position: relative">
       <!-- لوگوی مبدا (سمت راست) -->
       <div class="col-1 column items-center justify-center">

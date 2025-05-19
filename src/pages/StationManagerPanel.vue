@@ -50,7 +50,7 @@
           </div>
           <!-- Right: Flight Info (سه ستون صحیح RTL) -->
           <div class="col">
-            <div class="row items-center justify-between">
+            <div class="row items-center justify-end">
               <!-- مبدا (سمت راست) -->
               <div class="col-3 text-center">
                 <div class="text-h6">تهران (TEH)</div>
@@ -64,7 +64,12 @@
                     class="flight-line"
                     style="width: 40%; height: 2px; background: #cfd8dc"
                   ></div>
-                  <q-icon name="flight" class="flight-icon q-mx-md" size="sm" color="primary" />
+                  <img
+                    src="vector.png"
+                    alt="Mahan Logo"
+                    class="flight-icon q-mx-md"
+                    style="width: 24px; height: 24px"
+                  />
                   <div
                     class="flight-line"
                     style="width: 40%; height: 2px; background: #cfd8dc"

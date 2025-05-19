@@ -1,6 +1,7 @@
 // import { name } from '@vue/eslint-config-prettier/skip-formatting'
 
-import { useFlightStore } from 'stores/flightStore'
+import { useFlightStore } from '../stores/flightStore'
+import { useAuthStore } from '../stores/auth'
 
 const routes = [
   {
@@ -9,7 +10,13 @@ const routes = [
     children: [
       {
         path: '',
-        component: () => import('pages/IndexPage.vue'),
+        redirect: (to) => {
+          const authStore = useAuthStore()
+          if (!authStore.isAuthenticated) {
+            return '/login'
+          }
+          return authStore.isAdmin ? '/flights' : '/station-manager'
+        },
         meta: { requiresAuth: true },
       },
       {

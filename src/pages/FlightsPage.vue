@@ -16,6 +16,7 @@
             outlined
             dense
             class="col-3"
+            :rules="[(val) => !!val || 'لطفا مبدا را انتخاب کنید']"
           />
           <q-select
             v-model="filters.destination"
@@ -24,6 +25,7 @@
             outlined
             dense
             class="col-3"
+            :rules="[(val) => !!val || 'لطفا مقصد را انتخاب کنید']"
           />
           <q-input
             v-model="filters.flightNumber"
@@ -31,6 +33,7 @@
             outlined
             dense
             class="col-3"
+            :rules="[(val) => !val || /^[A-Z0-9]{2,6}$/.test(val) || 'شماره پرواز نامعتبر است']"
           />
           <q-btn label="جستجو" icon="search" class="search-button" @click="applyFilters" />
           <q-btn
@@ -288,9 +291,11 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import FlightCard from '../components/FlightCard.vue'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
+import { useQuasar } from 'quasar'
+import FlightCard from '../components/FlightCard.vue'
 
+const $q = useQuasar()
 const tab = ref('requestSubmit')
 const date = ref('')
 const router = useRouter()
@@ -320,42 +325,46 @@ onBeforeRouteUpdate((to, from, next) => {
 })
 
 const filters = ref({
-  passenger: '',
-  origin: '',
-  destination: '',
-  status: '',
-  priority: '',
+  origin: null,
+  destination: null,
   flightNumber: '',
+  passenger: '',
+  priority: null,
+  status: null,
 })
 
-const cities = ['تهران', 'مشهد', 'کرمان']
-const statusOptions = ['در انتظار بررسی', 'عدم پذیرش']
-const priorityOptions = ['کم', 'متوسط', 'زیاد', 'بالا', 'بسیار زیاد', 'بسیار بالا']
+const cities = [
+  { label: 'تهران', value: 'THR' },
+  { label: 'مشهد', value: 'MHD' },
+  { label: 'کرمان', value: 'KER' },
+  { label: 'دبی', value: 'DXB' },
+]
+
+const statusOptions = [
+  { label: 'در انتظار بررسی', value: 'pending' },
+  { label: 'تایید شده', value: 'approved' },
+  { label: 'رد شده', value: 'rejected' },
+]
+
+const priorityOptions = [
+  { label: 'کم', value: 'low' },
+  { label: 'متوسط', value: 'medium' },
+  { label: 'زیاد', value: 'high' },
+  { label: 'بسیار زیاد', value: 'very_high' },
+]
 
 const flights = ref([
   {
+    flightNumber: 'IR123',
     origin: 'THR',
     destination: 'MHD',
-    flightNumber: 'W51234',
-    date: '1403/12/08 - 15:30',
-    seats: 120,
-    price: '2,500,000',
-    plane: 'Airbus A320',
-    reservedCount: 85,
-    requestCount: 12,
+    date: '1403/02/01',
+    time: '10:30',
+    seats: 150,
+    reservedCount: 120,
+    requestCount: 5,
   },
-  {
-    origin: 'THR',
-    destination: 'KER',
-    flightNumber: 'W51235',
-    date: '1403/12/09 - 10:30',
-    seats: 100,
-    price: '2,200,000',
-    plane: 'Boeing 737',
-    reservedCount: 65,
-    requestCount: 8,
-  },
-  // ... پروازهای دیگر
+  // Add more sample flights
 ])
 
 const columns = [
@@ -462,16 +471,37 @@ const filteredRequests = ref([
   },
 ])
 
-const applyFilters = () => {}
+const filteredFlights = computed(() => {
+  return flights.value.filter((flight) => {
+    if (filters.value.origin && flight.origin !== filters.value.origin) return false
+    if (filters.value.destination && flight.destination !== filters.value.destination) return false
+    if (filters.value.flightNumber && !flight.flightNumber.includes(filters.value.flightNumber))
+      return false
+    return true
+  })
+})
 
-const clearFilters = () => {
+function applyFilters() {
+  if (!filters.value.origin || !filters.value.destination) {
+    $q.notify({
+      color: 'negative',
+      message: 'لطفا مبدا و مقصد را انتخاب کنید',
+      icon: 'error',
+      position: 'top',
+    })
+    return
+  }
+  // Filter logic is handled by computed property
+}
+
+function clearFilters() {
   filters.value = {
-    passenger: '',
-    origin: '',
-    destination: '',
-    status: '',
-    priority: '',
+    origin: null,
+    destination: null,
     flightNumber: '',
+    passenger: '',
+    priority: null,
+    status: null,
   }
   date.value = ''
 }
@@ -520,22 +550,6 @@ const saveEdit = () => {
   }
   editDialog.value = false
 }
-
-const filteredFlights = computed(() => {
-  return flights.value.filter((flight) => {
-    const originMatch =
-      !filters.value.origin ||
-      flight.origin === filters.value.origin ||
-      getOriginCity(flight.origin) === filters.value.origin
-
-    const destinationMatch =
-      !filters.value.destination ||
-      flight.destination === filters.value.destination ||
-      getDestinationCity(flight.destination) === filters.value.destination
-
-    return originMatch && destinationMatch
-  })
-})
 
 const getOriginCity = (code) => {
   const cities = { THR: 'تهران', MHD: 'مشهد', KER: 'کرمان', DXB: 'دبی' }
