@@ -1,11 +1,11 @@
 <template>
   <q-page class="q-pa-md bg-grey-1" dir="rtl">
     <q-header
-      class="bg-green-6 text-white q-py-sm q-px-lg flex items-center justify-end"
-      style="min-height: 48px"
+      class="text-white q-py-sm q-px-lg flex items-center justify-end"
+      style="min-height: 48px; background-color: #01986f"
     >
       <q-icon name="person" class="q-ml-xs" size="sm" />
-      <span class="text-body1">علی مقصودی</span>
+      <span class="text-body1"> آزاده دیوسالار</span>
     </q-header>
     <div class="flight-container q-mt-lg">
       <div class="row justify-start">
@@ -16,13 +16,12 @@
           icon="arrow_back"
           label="بازگشت به لیست پروازها"
           @click="router.push('/flights')"
-          style="font-size: 15px"
         />
       </div>
       <q-card class="q-mt-md q-mb-md q-pa-lg">
         <div class="row items-stretch">
-          <!-- Left: Model and Buttons (سمت چپ) -->
-          <div class="col-auto flex flex-center q-pl-xl">
+          <!-- Left: Model and Buttons -->
+          <div class="col-12 col-md-auto flex flex-center q-pl-xl">
             <div class="column items-center q-gutter-y-md">
               <div class="text-h5">A340</div>
               <div class="text-caption">مدل هواپیما</div>
@@ -45,24 +44,24 @@
             </div>
           </div>
           <!-- Vertical dashed divider -->
-          <div class="col-auto flex flex-center">
-            <div class="vertical-dashed mx-xl" />
+          <div class="col-auto flex flex-center q-px-md">
+            <div class="vertical-dashed" />
           </div>
-          <!-- Right: Flight Info (سه ستون صحیح RTL) -->
+          <!-- Right: Flight Info -->
           <div class="col">
             <div class="row items-center justify-end">
-              <!-- مبدا (سمت راست) -->
-              <div class="col-3 text-center">
+              <!-- مبدا -->
+              <div class="col-12 col-sm-3 text-center">
                 <div class="text-h6">تهران (TEH)</div>
                 <div class="text-caption">۰۲:۵۰</div>
                 <q-icon name="eco" color="primary" size="md" />
               </div>
-              <!-- مسیر پرواز (وسط) -->
-              <div class="col-6 text-center">
+              <!-- مسیر پرواز -->
+              <div class="col-12 col-sm-6 text-center">
                 <div class="row items-center justify-center no-wrap">
                   <div
-                    class="flight-line"
-                    style="width: 40%; height: 2px; background: #cfd8dc"
+                    class="flight-line flex-grow-1"
+                    style="height: 2px; background: #cfd8dc"
                   ></div>
                   <img
                     src="vector.png"
@@ -71,23 +70,25 @@
                     style="width: 24px; height: 24px"
                   />
                   <div
-                    class="flight-line"
-                    style="width: 40%; height: 2px; background: #cfd8dc"
+                    class="flight-line flex-grow-1"
+                    style="height: 2px; background: #cfd8dc"
                   ></div>
                 </div>
                 <div class="text-caption">۲۰۲۴/۱۲/۰۵</div>
               </div>
-              <!-- مقصد (سمت چپ) -->
-              <div class="col-3 text-center">
+              <!-- مقصد -->
+              <div class="col-12 col-sm-3 text-center">
                 <div class="text-h6">دبی (DXB)</div>
                 <div class="text-caption">۲۱:۰۵</div>
               </div>
             </div>
             <!-- ردیف ظرفیت‌ها -->
             <div class="row bg-grey-2 q-pa-sm rounded-borders items-center q-mt-md">
-              <div class="col text-center text-caption">ظرفیت اکونومی: 120 از 130</div>
-              <div class="col text-center text-caption">ظرفیت بیزینس: 5 از 10</div>
-              <div class="col text-center text-caption">تعداد درخواست‌های ستادی: 15</div>
+              <div class="col-12 col-sm-4 text-center text-caption">ظرفیت اکونومی: 120 از 130</div>
+              <div class="col-12 col-sm-4 text-center text-caption">ظرفیت بیزینس: 5 از 10</div>
+              <div class="col-12 col-sm-4 text-center text-caption">
+                تعداد درخواست‌های ستادی: 15
+              </div>
             </div>
           </div>
         </div>
@@ -111,7 +112,7 @@
                 :options="stationPriorityOptions"
                 dense
                 outlined
-                style="min-width: 90px; font-size: 15px"
+                class="full-width"
                 emit-value
                 map-options
                 dropdown-icon="expand_more"
@@ -196,13 +197,14 @@
             :options="[5, 10, 15]"
             dense
             outlined
+            class="q-ml-sm"
             style="width: 80px"
           />
         </div>
       </q-card>
     </div>
     <q-dialog v-model="showCapacityDialog" persistent>
-      <q-card style="min-width: 340px; max-width: 400px; text-align: center">
+      <q-card class="full-width" style="max-width: 400px">
         <q-card-section class="row items-center justify-between q-pb-none">
           <div class="text-h6">ظرفیت لیست انتظار</div>
           <q-btn flat round icon="close" color="negative" v-close-popup />
@@ -224,7 +226,7 @@
       </q-card>
     </q-dialog>
     <q-dialog v-model="showAddPassengerDialog" persistent>
-      <q-card style="min-width: 600px; max-width: 800px; text-align: center">
+      <q-card class="full-width" style="max-width: 800px">
         <q-card-section class="row items-center justify-between q-pb-none">
           <div class="text-h6">افزودن مسافر</div>
           <q-btn flat round icon="close" color="negative" v-close-popup />
@@ -452,50 +454,40 @@ function openDetailsDialog(row) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .flight-container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.q-header {
-  border-radius: 0 0 8px 8px;
-  margin-bottom: 16px;
-}
-.my-sticky-header-table thead tr th,
-.my-sticky-header-table tbody tr td {
-  text-align: center !important;
-  font-size: 15px;
-}
-.my-sticky-header-table tbody tr {
-  border-bottom: 1px solid #e0e0e0;
-}
-.vertical-dashed {
-  width: 2px;
-  height: 120px;
-  border-left: 2px dashed #cfd8dc;
-}
-.flight-route {
-  position: relative;
-  width: 100px;
-  height: 24px;
-  margin: 0 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.flight-line {
-  position: absolute;
   width: 100%;
-  height: 2px;
-  background-color: #cfd8dc;
-  z-index: 1;
 }
 
-.flight-icon {
-  position: relative;
-  z-index: 2;
-  background-color: white;
-  padding: 0 4px;
+.vertical-dashed {
+  height: 100%;
+  border-right: 2px dashed #cfd8dc;
+}
+
+@media (max-width: 599px) {
+  .vertical-dashed {
+    display: none;
+  }
+
+  .flight-container {
+    padding: 0 8px;
+  }
+}
+
+.my-sticky-header-table {
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th {
+    background-color: white;
+  }
+
+  thead tr th {
+    position: sticky;
+    z-index: 1;
+  }
+
+  thead tr:first-child th {
+    top: 0;
+  }
 }
 </style>

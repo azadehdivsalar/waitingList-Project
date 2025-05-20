@@ -10,9 +10,18 @@
       />
     </div>
     <FlightCard :flight="selectedFlight" :showSelectButton="false" />
+    <!-- لیست مسافران -->
+    <q-list bordered class="q-mt-md">
+      <q-item v-for="(p, idx) in passengers" :key="idx">
+        <q-item-section>{{ p.name }}</q-item-section>
+        <q-item-section>{{ p.priority }}</q-item-section>
+        <q-item-section>{{ p.phone }}</q-item-section>
+        <q-item-section>{{ p.passportNo }}</q-item-section>
+      </q-item>
+    </q-list>
     <div class="row q-mt-md">
       <q-btn
-        color="primary"
+        style="background-color: #01986f; color: #fff"
         label="افزودن مسافر جدید"
         icon="person_add"
         class="q-px-xl"
@@ -126,7 +135,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import FlightCard from '../components/FlightCard.vue'
@@ -157,6 +166,14 @@ const passenger = ref({
 
 const showSuccessDialog = ref(false)
 const showAddPassengerDialog = ref(false)
+const passengers = ref([])
+
+onMounted(() => {
+  const saved = localStorage.getItem('passengers')
+  if (saved) {
+    passengers.value = JSON.parse(saved)
+  }
+})
 
 function resetForm() {
   passenger.value = {
@@ -180,6 +197,10 @@ function onSubmit() {
     })
     return
   }
+
+  // افزودن مسافر جدید
+  passengers.value.push({ ...passenger.value })
+  localStorage.setItem('passengers', JSON.stringify(passengers.value))
 
   // Show success dialog
   showSuccessDialog.value = true

@@ -1,51 +1,56 @@
 <template>
   <q-card v-if="flight" class="flight-card q-pa-none" dir="rtl" style="overflow: visible">
-    <div class="row q-pa-md items-center" style="min-height: 120px; position: relative">
-      <!-- لوگوی مبدا (سمت راست) -->
-      <div class="col-1 column items-center justify-center">
-        <img
-          src="../assets/icons/Vector.png"
-          alt="logo"
-          style="width: 32px; height: 32px; margin-bottom: 8px"
-        />
-      </div>
-      <!-- خط چین عمودی -->
-      <!-- <div class="vertical-dashed"></div> -->
-      <!-- وسط: اطلاعات پرواز -->
-      <div class="col-8 column items-center justify-center">
-        <div class="row items-center justify-between full-width">
-          <div class="text-bold text-h6">
-            ({{ getOriginCode(flight.origin) }}) {{ getOriginCity(flight.origin) }}
+    <div class="row q-pa-md items-center" style="min-height: 120px">
+      <!-- اطلاعات پرواز و ظرفیت‌ها (وسط کارت) -->
+      <div class="col">
+        <!-- ردیف اول: اطلاعات پرواز -->
+        <div class="row items-center justify-between">
+          <!-- مبدا -->
+          <div class="col-3 text-center">
+            <div class="text-h6">
+              ({{ getOriginCode(flight.origin) }}) {{ getOriginCity(flight.origin) }}
+            </div>
+            <div class="text-caption">{{ flight.originTime }}</div>
           </div>
-          <div class="horizontal-line"></div>
-          <q-icon name="flight_takeoff" size="24px" color="grey-6" />
-          <div class="horizontal-line"></div>
-          <div class="text-bold text-h6 column items-center">
-            ({{ getDestinationCode(flight.destination) }})
-            {{ getDestinationCity(flight.destination) }}
-            <div class="text-caption text-grey-7 q-mt-xs">{{ flight.arrivalTime }}</div>
+          <!-- مسیر پرواز با خط افقی و آیکون -->
+          <div class="col-6 text-center">
+            <div class="row items-center justify-center no-wrap">
+              <div class="horizontal-line"></div>
+              <q-icon name="flight_takeoff" color="primary" size="md" class="q-mx-md" />
+              <div class="horizontal-line"></div>
+            </div>
+            <div class="text-caption">{{ flight.date }}</div>
+          </div>
+          <!-- مقصد -->
+          <div class="col-3 text-center">
+            <div class="text-h6">
+              ({{ getDestinationCode(flight.destination) }})
+              {{ getDestinationCity(flight.destination) }}
+            </div>
+            <div class="text-caption">{{ flight.arrivalTime }}</div>
           </div>
         </div>
-        <div class="row items-center justify-between full-width q-mt-sm">
-          <div class="info-box">
+        <!-- ردیف دوم: ظرفیت‌ها -->
+        <div class="row items-center justify-between q-mt-sm">
+          <div class="col text-center">
             <span class="info-label">ظرفیت کل:</span>
             <span class="info-value">{{ flight.seats }}</span>
           </div>
-          <div class="info-box">
+          <div class="col text-center">
             <span class="info-label">تعداد رزروها:</span>
             <span class="info-value">{{ flight.reservedCount }}</span>
           </div>
-          <div class="info-box">
-            <span class="info-label">تعداد درخواست‌های ستادی:</span>
+          <div class="col text-center">
+            <span class="info-label">درخواست‌های ستادی:</span>
             <span class="info-value">{{ flight.requestCount }}</span>
           </div>
         </div>
-        <div class="text-caption text-grey-7 q-mt-xs">{{ flight.date }}</div>
       </div>
-      <div class="vertical-dashed"></div>
-      <!-- خط چین عمودی -->
-      <div class="col-2 column items-center justify-center">
-        <div class="text-h6 q-mb-xs">{{ flight.plane }}</div>
+      <!-- خط چین عمودی و ستون مدل هواپیما و دکمه انتخاب -->
+      <div class="vertical-dashed mx-md"></div>
+      <div class="col-auto column items-center justify-center">
+        <div class="text-h5 q-mb-xs">{{ flight.plane }}</div>
+        <div class="text-caption q-mb-md">مدل هواپیما</div>
         <q-btn
           v-if="showSelectButton"
           label="انتخاب پرواز"
@@ -54,8 +59,6 @@
           @click="gotoFlightSelected"
         />
       </div>
-
-      <!-- ستون چپ: مدل هواپیما و باکس اطلاعات -->
     </div>
   </q-card>
 </template>
@@ -63,8 +66,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useFlightStore } from 'src/stores/flightStore'
-// import { useFlightStore } from 'stores/flightStore'
-// import { date } from 'quasar'
 
 const { flight, showSelectButton } = defineProps({
   flight: { type: Object, required: true },
@@ -112,17 +113,17 @@ const gotoFlightSelected = () => {
     transparent 6px,
     transparent 12px
   );
-  margin: 0 8px;
+  margin: 0 16px;
   border-radius: 1px;
+  align-self: stretch;
 }
-.info-boxes {
-  width: 100%;
+.flight-info-box {
   background: #f5f5f5;
   border-radius: 8px;
-  padding: 8px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  padding: 12px 16px;
+  min-width: 120px;
+  text-align: center;
+  margin-bottom: 8px;
 }
 .info-box {
   display: flex;
@@ -130,6 +131,7 @@ const gotoFlightSelected = () => {
   gap: 4px;
   font-size: 14px;
   color: #333;
+  justify-content: space-between;
 }
 .info-label {
   color: #666;

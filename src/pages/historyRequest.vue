@@ -163,7 +163,7 @@
         </q-form>
         <!-- جدول -->
         <q-table
-          :rows="filteredRequests"
+          :rows="allRequests"
           :columns="columns"
           row-key="id"
           :pagination="pagination"
@@ -262,11 +262,11 @@
               <q-card-section class="text-h6">ویرایش اطلاعات مسافر</q-card-section>
               <q-btn
                 flat
-                dense
-                round
                 icon="close"
-                v-close-popup
                 color="negative"
+                round
+                dense
+                v-close-popup
                 class="modalClose"
               />
             </div>
@@ -435,6 +435,7 @@ const columns = [
 
 const filteredRequests = ref([])
 const filteredFlights = ref([])
+const allRequests = ref([])
 
 const getOriginCity = (code) => {
   const city = cities.find((c) => c.value === code)
@@ -586,14 +587,20 @@ const editForm = ref({
 })
 
 const saveEdit = () => {
-  const index = filteredRequests.value.findIndex((r) => r.id === editForm.value.id)
+  const index = allRequests.value.findIndex((r) => r.id === editForm.value.id)
   if (index !== -1) {
-    filteredRequests.value[index] = { ...editForm.value }
+    allRequests.value[index] = { ...editForm.value }
+    // ذخیره در localStorage
+    localStorage.setItem('passengers', JSON.stringify(allRequests.value))
   }
   editDialog.value = false
 }
 
 onMounted(() => {
+  const saved = localStorage.getItem('passengers')
+  if (saved) {
+    allRequests.value = JSON.parse(saved)
+  }
   applyFilters()
 })
 </script>
